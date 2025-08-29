@@ -1,0 +1,25 @@
+{
+  "name": "parabank-automation",
+  "version": "1.0.0",
+  "description": "An automation framework using Playwright and TypeScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --project=chromium",
+    "test:api": "npx playwright test --grep @api",
+    "lint": "npx eslint ."
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-playwright": "^1.5.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
+  }
+}
