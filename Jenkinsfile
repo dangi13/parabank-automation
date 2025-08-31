@@ -23,20 +23,18 @@ pipeline {
 
     post {
         always {
-            steps {
+\            steps {
                 archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
             }
-        }
 
-        always {
             script {
                 if (fileExists('playwright-report/index.html')) {
                     def reportUrl = "${env.BUILD_URL}artifact/playwright-report/index.html"
                     echo "Playwright Report URL: ${reportUrl}"
-            } else {
+                } else {
                     echo "No Playwright report generated."
+                }
             }
         }
     }
-}
 }
