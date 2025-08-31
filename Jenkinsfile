@@ -14,7 +14,7 @@ pipeline {
                     # Manually run the Docker command with its full path
                     /usr/local/bin/docker run --rm \\
                       -v $PWD:/usr/src/app -w /usr/src/app \\
-                      mcr.microsoft.com/playwright:v1.55.0 \\
+                      mcr.microsoft.com/playwright:v1.54.2 \\
                       /bin/bash -c "npm ci && npx playwright install --with-deps && xvfb-run npx playwright test"
                 '''
             }
