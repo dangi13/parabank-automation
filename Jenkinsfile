@@ -1,14 +1,5 @@
 pipeline {
-    agent {
-        docker {
-           image 'mcr.microsoft.com/playwright:v1.55.0-noble'
-        }
-    }
-
-    environment {
-        // This makes the docker command available to the agent { docker { ... } } step
-       PATH = "/usr/local/bin:${env.PATH}"
-    }
+    agent any // Use any available agent, which will be your machine.
     
     stages {
         stage('Checkout Code') {
@@ -17,16 +8,15 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
+        stage('Run Tests in Docker') {
             steps {
-                sh 'npm ci'
-                sh 'npx playwright install --with-deps'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npx playwright test --reporter=html'
+                sh '''
+                    # Manually run the Docker command with its full path
+                    /usr/local/bin/docker run --rm \\
+                      -v $PWD:/usr/src/app -w /usr/src/app \\
+                      mcr.microsoft.com/playwright/node:lts \\
+                      /bin/bash -c "npm ci && npx playwright install --with-deps && npx playwright test --reporter=html"
+                '''
             }
         }
         
