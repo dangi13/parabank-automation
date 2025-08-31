@@ -6,6 +6,7 @@ import { OpenNewAccountPage } from '../pages/OpenNewAccountPage';
 import { AccountsOverviewPage } from '../pages/AccountsOverviewPage';
 import { TransferFundsPage } from '../pages/TransferFundsPage';
 import { BillPaymentPage } from '../pages/BillPaymentsPage';
+import { FindTransactionsPage } from '../pages/FindTransactionsPage';
 
 export type MyPageObjects = {
   loginPage: LoginPage;
@@ -15,6 +16,7 @@ export type MyPageObjects = {
   accountsOverviewPage: AccountsOverviewPage;
   transferFundsPage: TransferFundsPage;
   billPaymentsPage: BillPaymentPage;
+  findTransactionsPage: FindTransactionsPage;
 };
 
 export const pageObjectFixtures = baseTest.extend<MyPageObjects>({
@@ -38,5 +40,8 @@ export const pageObjectFixtures = baseTest.extend<MyPageObjects>({
   },
   billPaymentsPage: async ({ page }, use) => {
     await use(new BillPaymentPage(page));
+  },
+  findTransactionsPage: async ({ page }, use) => {
+    await use(new FindTransactionsPage(page));
   },
 });

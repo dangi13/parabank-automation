@@ -1,10 +1,11 @@
+import { Cookie } from '@playwright/test';
 import { test, expect } from '../../fixtures/test';
-import {  createRandomPayee } from '../../helpers/data.helper';
-
-test.describe.configure({ mode: 'parallel' });
+import { createRandomPayee } from '../../helpers/data.helper';
+import { Transaction } from '../../types/transaction';
+import { DateHelper } from '../../helpers/date.helper';
 
 test.describe('Parabank e2e Flow', () => {
-  test('should successfully register a new user do transfer and bill payments', async ({ registrationPage, registeredUser, homePage, openNewAccountPage, accountsOverviewPage, transferFundsPage, billPaymentsPage }) => {
+  test('should successfully register a new user do transfer and bill payments', async ({ registrationPage, registeredUser, homePage, openNewAccountPage, accountsOverviewPage, transferFundsPage, billPaymentsPage, findTransactionsPage, bankApi }) => {
 
     //1. Verify successful registration (already done in auth fixture)
     const welcomeMessage = `Welcome ${registeredUser.username}`;
@@ -15,10 +16,7 @@ test.describe('Parabank e2e Flow', () => {
     //2. Open new Savings account
     await homePage.navigate()
     await homePage.clickOpenNewAccountLink()
-    await expect(registrationPage.page.getByRole('heading', { name: 'Open New Account' })).toBeVisible();
-    await openNewAccountPage.selectAccountType('SAVINGS');
-    await openNewAccountPage.openNewAccountButton.click({delay: 2000, });
-    const newAccountNumber = await openNewAccountPage.getNewAccountNumber();
+    const newAccountNumber = await openNewAccountPage.createNewAccount('SAVINGS');
     console.log(`New account created with account number: ${newAccountNumber}`);
     await expect(openNewAccountPage.page.getByRole('heading', { name: 'Account Opened!' })).toBeVisible();
     await expect(openNewAccountPage.page.getByText('Congratulations, your account is now open.')).toBeVisible();
@@ -27,15 +25,11 @@ test.describe('Parabank e2e Flow', () => {
     //3. Validate accounts overview page
     await accountsOverviewPage.navigate();
     const accounts = await accountsOverviewPage.getAccountOverview();
-    console.log('Account Overview Data:', accounts);
-    console.log(`Total is ${await accountsOverviewPage.getTotalBalance()} `);
-
     const accountToTransferFrom = accounts.find(account => account.accountNumber === newAccountNumber);
     console.log(`Account to transfer from details: ${JSON.stringify(accountToTransferFrom)}`);
     expect(accountToTransferFrom).toBeDefined();
     expect(accountToTransferFrom?.balance).not.toBe('$0.00');
     expect(accountToTransferFrom?.availableAmount).not.toBe('$0.00');
-
     const accountToTransferTo = accounts.find(account => account.accountNumber !== newAccountNumber);
     console.log(`Account to transfer to details: ${JSON.stringify(accountToTransferTo)}`);
     expect(accountToTransferTo).toBeDefined();
@@ -56,7 +50,28 @@ test.describe('Parabank e2e Flow', () => {
     billPaymentsPage.navigate();
     const payeeWithCustomAmount = createRandomPayee({ amount: transferAmount });
     await billPaymentsPage.sendPaymentWithDetails(payeeWithCustomAmount, newAccountNumber);
-    await billPaymentsPage.validatePaymentSuccess( payeeWithCustomAmount.name, payeeWithCustomAmount.amount, newAccountNumber );
+    await billPaymentsPage.validatePaymentSuccess(payeeWithCustomAmount.name, payeeWithCustomAmount.amount, newAccountNumber);
+
+    // Find Bill payment transaction
+    findTransactionsPage.navigate();
+    const cookies: Cookie[] = await billPaymentsPage.page.context().cookies();
+    const jsessionIdCookie = cookies.find(cookie => cookie.name === 'JSESSIONID');
+    const transactions = await bankApi.getTransactionsByAmount(jsessionIdCookie?.value as string, newAccountNumber, parseFloat(transferAmount)) as Transaction[];
+    console.log('Transactions fetched from API:', JSON.stringify(transactions));
+    expect(Array.isArray(transactions)).toBeTruthy();
+    expect(transactions.length).toBeGreaterThan(0);
+    
+    // Find the specific transaction that matches the bill payment details.
+    const billPaymentTransaction = transactions.find(t =>
+      t.description.includes('Bill Payment to') &&
+      t.description.includes(payeeWithCustomAmount.name) &&
+      t.amount === parseFloat(transferAmount)
+    );
+    expect(typeof billPaymentTransaction?.id).toBe('number');
+    new DateHelper().validateApiTimestampIsCurrentDayUTC(billPaymentTransaction?.date as number);
+    expect(billPaymentTransaction).toBeDefined();
+    expect(billPaymentTransaction?.type).toBe('Debit');
+    expect(billPaymentTransaction?.accountId).toBe(parseInt(newAccountNumber));
   });
 
 });

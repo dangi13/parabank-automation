@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class OpenNewAccountPage {
     readonly page: Page;
@@ -22,16 +22,11 @@ export class OpenNewAccountPage {
         await this.page.goto('/parabank/openaccount.htm');
     }
 
-    async selectAccountType(accountType: string): Promise<void> {
-        await this.typeOfAccountDropdown.selectOption({ label: accountType });
-    }
-
-    async selectExistingAccount(accountNumber: string): Promise<void> {
-        await this.existingAccountDropdown.selectOption({ label: accountNumber });
-    }
-
-  async getNewAccountNumber(): Promise<string> {
-    await this.page.waitForFunction(selector => {
+  async createNewAccount(accountType: string): Promise<string> {
+     await expect(this.page.getByRole('heading', { name: 'Open New Account' })).toBeVisible();
+      await this.typeOfAccountDropdown.selectOption({ label: accountType });
+      await this.openNewAccountButton.click({ delay: 2000, });
+      await this.page.waitForFunction(selector => {
       const element = document.querySelector(selector);
       if (element) {
         const text = element.textContent;

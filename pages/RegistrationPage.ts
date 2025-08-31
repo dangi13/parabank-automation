@@ -51,7 +51,3 @@ export class RegistrationPage {
     await this.registerButton.click();
   }
 }
-
-function wait(ms: number | undefined) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}

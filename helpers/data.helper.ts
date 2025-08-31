@@ -1,6 +1,7 @@
 // helpers/data.helper.ts
 import { faker } from '@faker-js/faker';
 import { User } from '../types/user';
+import { Payee } from '../types/payee';
 
 /**
  * We try to ensure that the generated username does not exceed 15 characters.
@@ -11,15 +12,15 @@ import { User } from '../types/user';
  */
 export function createRandomUser(): User {
   // Generate a unique suffix using a portion of the current timestamp.
-  const uniqueSuffix = Date.now().toString().slice(-4); 
+  const uniqueSuffix = Date.now().toString().slice(-4);
 
   // Generate raw first and last names.
   let firstName = faker.person.firstName();
   let lastName = faker.person.lastName();
 
   // Ensure neither name is empty.
-  if (!firstName) firstName = 'FN'; 
-  if (!lastName) lastName = 'LN'; 
+  if (!firstName) firstName = 'FN';
+  if (!lastName) lastName = 'LN';
 
   // Calculate available length for the names after including the unique suffix.
   const maxNameLength = 15;
@@ -29,14 +30,14 @@ export function createRandomUser(): User {
   // We'll split the available length, giving a bit more to the first name.
   const firstHalfLength = Math.floor(availableLength / 2);
   const secondHalfLength = availableLength - firstHalfLength;
-  
+
   const finalFirstName = `${firstName.slice(0, firstHalfLength)}`;
   const finalLastName = `${lastName.slice(0, secondHalfLength)}`;
 
   const finalUsername = `${finalFirstName}.${finalLastName}.${uniqueSuffix}`;
-  
+
   // Ensure the username does not exceed 15 characters, as it's a common constraint.
-  const username = finalUsername.slice(0, maxNameLength); 
+  const username = finalUsername.slice(0, maxNameLength);
 
   const address = faker.location.streetAddress();
   const city = faker.location.city();
@@ -64,29 +65,23 @@ export function createRandomUser(): User {
   return user;
 }
 
-export interface Payee {
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  phone: string;
-  accountNumber: string;
-  amount: string;
-}
 
-export function createRandomPayee(overrides?: Partial<Payee>): Payee {
-  const basePayee = {
-    name: faker.person.fullName(),
-    address: faker.location.streetAddress(),
-    city: faker.location.city(),
-    state: faker.location.state({ abbreviated: true }),
-    zipCode: faker.location.zipCode(),
-    phone: faker.phone.number(),
-    accountNumber: faker.string.numeric({ length: 5 }),
-    amount: faker.number.int({ min: 1, max: 500 }).toString(), // The amount is now a string,
-  };
+  export function createRandomPayee(overrides?: Partial<Payee>): Payee {
+    const basePayee = {
+      name: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      city: faker.location.city(),
+      state: faker.location.state({ abbreviated: true }),
+      zipCode: faker.location.zipCode(),
+      phone: faker.phone.number(),
+      accountNumber: faker.string.numeric({ length: 5 }),
+      amount: faker.number.int({ min: 1, max: 500 }).toString(), // The amount is now a string,
+    };
 
-  // Merge the base payee object with any provided overrides
-  return { ...basePayee, ...overrides };
-}
+    // Merge the base payee object with any provided overrides
+    const mergedPayee = overrides ? { ...basePayee, ...overrides } : basePayee;
+    console.log('Generated payee data:', JSON.stringify(mergedPayee));
+
+    return mergedPayee;
+  }
+

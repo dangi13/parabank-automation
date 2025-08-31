@@ -19,19 +19,7 @@ export class HomePage {
     await this.page.goto('/parabank/index.htm');
   }
 
-  async getWelcomeMessage(): Promise<string | null> {
-    return this.welcomeMessage.textContent();
-  }
-
-  async clickProfileLink(): Promise<void> {
-    await this.profileLink.click();
-  }
-
-  async logout(): Promise<void> {
-    await this.logoutButton.click();
-  }
-
-    async clickOpenNewAccountLink(): Promise<void> {
+  async clickOpenNewAccountLink(): Promise<void> {
     await this.openNewAccountLink.click();
   }
 }

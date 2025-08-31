@@ -1,14 +1,14 @@
 import { test as baseTest, APIRequestContext } from '@playwright/test';
 import { ApiHelper } from '../helpers/api.helper';
-import { UserApi } from '../api/UserApi';
+import { BankApi } from '../api/BankApi';
 
-export type UserApiFixtures = {
-  userApi: UserApi;
+export type BankApiFixtures = {
+  bankApi: BankApi;
 };
 
-export const apiFixtures = baseTest.extend<UserApiFixtures>({
-  userApi: async ({ request }, use) => {
+export const apiFixtures = baseTest.extend<BankApiFixtures>({
+  bankApi: async ({ request }, use) => {
     const apiHelper = new ApiHelper(request);
-    await use(new UserApi(apiHelper));
+    await use(new BankApi(apiHelper));
   },
 });

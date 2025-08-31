@@ -3,11 +3,11 @@ import { APIRequestContext, APIResponse } from '@playwright/test';
 export class ApiHelper {
   constructor(private request: APIRequestContext) {}
 
-  async get(url: string, params?: { [key: string]: string | number }): Promise<APIResponse> {
-    return this.request.get(url, { params });
+  async get(url: string, headers?: Record<string, string>): Promise<APIResponse> {
+    return this.request.get(url, { headers });
   }
 
-  async post(url: string, data: any, headers?: any): Promise<APIResponse> {
+  async post(url: string, data: any, headers?: Record<string, string>): Promise<APIResponse> {
     return this.request.post(url, {
       data,
       headers: {
@@ -17,7 +17,7 @@ export class ApiHelper {
     });
   }
 
-  async put(url: string, data: any, headers?: any): Promise<APIResponse> {
+  async put(url: string, data: any, headers?: Record<string, string>): Promise<APIResponse> {
     return this.request.put(url, {
       data,
       headers: {
@@ -27,7 +27,7 @@ export class ApiHelper {
     });
   }
 
-  async delete(url: string): Promise<APIResponse> {
-    return this.request.delete(url);
+  async delete(url: string, headers?: Record<string, string>): Promise<APIResponse> {
+    return this.request.delete(url, { headers });
   }
 }
