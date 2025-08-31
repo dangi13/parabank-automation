@@ -23,10 +23,8 @@ pipeline {
 
     post {
         always {
-            stage('Publish Reports') {
-                steps {
-                    archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
-                }
+            steps {
+                archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
             }
         }
 
