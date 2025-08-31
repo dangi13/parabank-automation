@@ -14,7 +14,7 @@ pipeline {
                     /usr/local/bin/docker run --rm \\
                       -v $PWD:/usr/src/app -w /usr/src/app \\
                       mcr.microsoft.com/playwright:v1.54.2 \\
-                      /bin/bash -c "npm ci && npx playwright install chromium --with-deps && npx playwright test --reporter=html,list"
+                      /bin/bash -c "npm ci && npx playwright install chromium --with-deps && npx playwright test"
                 '''
             }
         }

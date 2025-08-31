@@ -2,6 +2,7 @@ import { tr } from '@faker-js/faker';
 import { defineConfig, devices } from '@playwright/test';
 
 const isCI = !!process.env.BUILD_NUMBER;
+console.log(`Running in CI: ${isCI}`);
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
