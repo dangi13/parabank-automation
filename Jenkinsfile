@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         // This makes the docker command available to the agent { docker { ... } } step
-        PATH = '/usr/local/bin:' + env.PATH
+       PATH = "/usr/local/bin:${env.PATH}"
     }
     
     stages {
