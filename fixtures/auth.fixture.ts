@@ -27,7 +27,7 @@ registeredUser: [
         try {
           await registrationPage.navigate();
           await registrationPage.register(user);
-          await expect(page.locator('span.error:has-text("This username already exists.")').isVisible()).toBeFalsy(); 
+          expect(page.locator('span.error:has-text("This username already exists.")').isVisible()).toBeFalsy(); 
           registered = true;
         } catch (error) {
           console.error(`Attempt ${attempt + 1} failed: ${error}`);

@@ -19,13 +19,16 @@ pipeline {
                 '''
             }
         }
-        
-        stage('Publish Reports') {
-            steps {
-                archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
+    }
+
+    post {
+        always {
+            stage('Publish Reports') {
+                steps {
+                    archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
+                }
             }
         }
-    }
 
     post {
         always {
