@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'mcr.microsoft.com/playwright/node:lts'
+           image 'mcr.microsoft.com/playwright:v1.55.0-noble'
             args '-v $PWD:/usr/src/app -w /usr/src/app'
         }
     }
@@ -20,7 +20,7 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm ci'
                 sh 'npx playwright install --with-deps'
             }
         }
