@@ -28,8 +28,9 @@ pipeline {
                 archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
             }
         }
-        
-        post {
+    }
+
+    post {
         always {
             script {
                 // Construct and print the URL to the build logs
@@ -39,4 +40,3 @@ pipeline {
         }
     }
     }
-}
