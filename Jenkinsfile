@@ -28,5 +28,15 @@ pipeline {
                 archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
             }
         }
+        
+        post {
+        always {
+            script {
+                // Construct and print the URL to the build logs
+                def reportUrl = "${env.BUILD_URL}artifact/playwright-report/index.html"
+                echo "Playwright Report URL: ${reportUrl}"
+            }
+        }
+    }
     }
 }
