@@ -10,7 +10,6 @@ pipeline {
         stage('Run Tests in Docker') {
             steps {
                 sh '''
-                    # Manually run the Docker command with its full path
                     /usr/local/bin/docker run --rm \\
                       -v $PWD:/usr/src/app -w /usr/src/app \\
                       -e BUILD_NUMBER="$BUILD_NUMBER" \\
@@ -23,10 +22,8 @@ pipeline {
 
     post {
         always {
-            steps {
-                archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
-            }
-
+            archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
+        
             script {
                 if (fileExists('playwright-report/index.html')) {
                     def reportUrl = "${env.BUILD_URL}artifact/playwright-report/index.html"
