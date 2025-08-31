@@ -29,9 +29,7 @@ pipeline {
                 }
             }
         }
-    }
 
-    post {
         always {
             script {
                 if (fileExists('playwright-report/index.html')) {
