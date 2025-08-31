@@ -8,7 +8,7 @@ test.describe('Parabank e2e Flow', () => {
   test('Should successfully register a new user do transfer and bill payments', async ({ registrationPage, registeredUser, homePage, openNewAccountPage, accountsOverviewPage, transferFundsPage, billPaymentsPage, findTransactionsPage, bankApi }) => {
 
     //1. Verify successful registration (already done in auth fixture)
-    const welcomeMessage = `Welcom ${registeredUser.username}`;
+    const welcomeMessage = `Welcome ${registeredUser.username}`;
     const successMessage = 'Your account was created successfully. You are now logged in.';
     await expect(registrationPage.page.getByText(welcomeMessage, { exact: true })).toBeVisible();
     await expect(registrationPage.page.getByText(successMessage, { exact: true })).toBeVisible();

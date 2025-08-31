@@ -21,7 +21,7 @@ export default defineConfig({
   use: {
     trace: 'on-first-retry',
     baseURL: 'https://parabank.parasoft.com',
-    headless: true,
+    headless: isCI,
     video: 'on',
   },
   projects: [
