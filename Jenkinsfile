@@ -1,5 +1,5 @@
 pipeline {
-    agent any // Use any available agent, which will be your machine.
+    agent any // Use any available agent, which will be my machine. we can use our custom agent also, now sicne we have only one machine we can use any.
     stages {
         stage('Checkout Code') {
             steps {
@@ -29,9 +29,13 @@ pipeline {
     post {
         always {
             script {
-                def reportUrl = "${env.BUILD_URL}artifact/playwright-report/index.html"
-                echo "Playwright Report URL: ${reportUrl}"
+                if (fileExists('playwright-report/index.html')) {
+                    def reportUrl = "${env.BUILD_URL}artifact/playwright-report/index.html"
+                    echo "Playwright Report URL: ${reportUrl}"
+            } else {
+                    echo "No Playwright report generated."
             }
         }
     }
-    }
+}
+}
