@@ -27,13 +27,11 @@ registeredUser: [
         try {
           await registrationPage.navigate();
           await registrationPage.register(user);
-          const usernameErrorLocator = page.locator('span.error:has-text("This username already exists.")');
-          await expect(usernameErrorLocator).not.toBeVisible();
+          await expect(page.locator('body')).not.toContainText('This username already exists.');          
           registered = true;
         } catch (error) {
           console.error(`Attempt ${attempt + 1} failed: ${error}`);
           if (attempt === maxRetries - 1) {
-            console.error('Registration attempt failed.');
             throw new Error(`Failed to register user after ${maxRetries} attempts.`);
           }
         }
