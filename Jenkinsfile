@@ -7,7 +7,7 @@ pipeline {
                 script {
                     // Use the full path to docker to ensure the command is found.
                     // This command builds your Dockerfile and tags the image for caching.
-                    sh '/usr/local/bin/docker build -t playwright-ci-image:v1.54.2 .'
+                    sh 'docker build -t playwright-ci-image:${BUILD_NUMBER} .'
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
                     # This is fast because the image is cached locally.
                     /usr/local/bin/docker run --rm \\
                       -v $PWD:/usr/src/app -w /usr/src/app \\
-                      playwright-ci-image:v1.54.2 \\
+                      playwright-ci-image:${BUILD_NUMBER} \\
                       /bin/bash -c "npm ci && npx playwright test --reporter=html"
                 '''
             }
