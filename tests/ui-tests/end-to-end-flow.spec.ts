@@ -52,7 +52,7 @@ test.describe('Parabank e2e Flow', () => {
     await billPaymentsPage.sendPaymentWithDetails(payeeWithCustomAmount, newAccountNumber);
     await billPaymentsPage.validatePaymentSuccess(payeeWithCustomAmount.name, payeeWithCustomAmount.amount, newAccountNumber);
 
-    // Find Bill payment transaction
+    // Find Bill payment transaction through API
     findTransactionsPage.navigate();
     const cookies: Cookie[] = await billPaymentsPage.page.context().cookies();
     const jsessionIdCookie = cookies.find(cookie => cookie.name === 'JSESSIONID');
