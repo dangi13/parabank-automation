@@ -1,3 +1,4 @@
+import { tr } from '@faker-js/faker';
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
@@ -8,11 +9,11 @@ export default defineConfig({
   //workers: process.env.CI ? 1 : undefined,
   workers: 20,
   reporter: 'html',
-  timeout: 60000, // Increase global timeout to 60 seconds
+  timeout: 60000,
   use: {
     trace: 'on-first-retry',
     baseURL: 'https://parabank.parasoft.com',
-    headless: false,
+    headless: process.env.CI ? true : false,
     video: 'on',
   },
   projects: [
