@@ -1,3 +1,4 @@
+import { tr } from '@faker-js/faker';
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 
@@ -13,7 +14,7 @@ export default defineConfig({
   use: {
     trace: 'on-first-retry',
     baseURL: 'https://parabank.parasoft.com',
-    headless: false,
+    headless: true,
   },
   projects: [
     {
