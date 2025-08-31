@@ -13,6 +13,7 @@ pipeline {
                     # Manually run the Docker command with its full path
                     /usr/local/bin/docker run --rm \\
                       -v $PWD:/usr/src/app -w /usr/src/app \\
+                      -e BUILD_NUMBER="$BUILD_NUMBER" \\
                       mcr.microsoft.com/playwright:v1.54.2 \\
                       /bin/bash -c "npm ci && npx playwright install chromium --with-deps && npx playwright test"
                 '''
