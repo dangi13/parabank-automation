@@ -1,5 +1,12 @@
 pipeline {
-      environment {
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright/node:lts'
+            args '-v $PWD:/usr/src/app -w /usr/src/app'
+        }
+    }
+
+    environment {
         // This makes the docker command available to the agent { docker { ... } } step
         PATH = '/usr/local/bin:' + env.PATH
     }
