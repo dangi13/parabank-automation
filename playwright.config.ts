@@ -5,7 +5,7 @@ const isCI = !!process.env.BUILD_NUMBER;
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  forbidOnly: !!isCI,
+  forbidOnly: isCI,
   retries: isCI ? 1 : 0,
   //workers: process.env.CI ? 1 : undefined,
   workers: 20,
