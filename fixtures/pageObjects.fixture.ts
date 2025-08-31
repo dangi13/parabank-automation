@@ -1,12 +1,12 @@
 import { test as baseTest } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { RegistrationPage } from '../pages/RegistrationPage';
-import { HomePage } from '../pages/HomePage';
-import { OpenNewAccountPage } from '../pages/OpenNewAccountPage';
-import { AccountsOverviewPage } from '../pages/AccountsOverviewPage';
-import { TransferFundsPage } from '../pages/TransferFundsPage';
-import { BillPaymentPage } from '../pages/BillPaymentsPage';
-import { FindTransactionsPage } from '../pages/FindTransactionsPage';
+import { LoginPage } from '../pages/loginPage';
+import { RegistrationPage } from '../pages/registrationPage';
+import { HomePage } from '../pages/homePage';
+import { OpenNewAccountPage } from '../pages/openNewAccountPage';
+import { AccountsOverviewPage } from '../pages/accountsOverviewPage';
+import { TransferFundsPage } from '../pages/transferFundsPage';
+import { BillPaymentPage } from '../pages/billPaymentsPage';
+import { FindTransactionsPage } from '../pages/findTransactionsPage';
 
 export type MyPageObjects = {
   loginPage: LoginPage;

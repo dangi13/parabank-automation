@@ -5,7 +5,7 @@ import { Transaction } from '../../types/transaction';
 import { DateHelper } from '../../helpers/date.helper';
 
 test.describe('Parabank e2e Flow', () => {
-  test('should successfully register a new user do transfer and bill payments', async ({ registrationPage, registeredUser, homePage, openNewAccountPage, accountsOverviewPage, transferFundsPage, billPaymentsPage, findTransactionsPage, bankApi }) => {
+  test('Should successfully register a new user do transfer and bill payments', async ({ registrationPage, registeredUser, homePage, openNewAccountPage, accountsOverviewPage, transferFundsPage, billPaymentsPage, findTransactionsPage, bankApi }) => {
 
     //1. Verify successful registration (already done in auth fixture)
     const welcomeMessage = `Welcome ${registeredUser.username}`;

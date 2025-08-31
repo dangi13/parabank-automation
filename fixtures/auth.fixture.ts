@@ -1,6 +1,6 @@
-import { test as baseTest } from '@playwright/test';
-import { RegistrationPage } from '../pages/RegistrationPage';
-import { LoginPage } from '../pages/LoginPage';
+import { test as baseTest, expect } from '@playwright/test';
+import { RegistrationPage } from '../pages/registrationPage';
+import { LoginPage } from '../pages/loginPage';
 import { createRandomUser } from '../helpers/data.helper';
 import { User } from '../types/user';
 
@@ -10,12 +10,35 @@ export type MyAuthFixtures = {
 };
 
 export const authFixtures = baseTest.extend<MyAuthFixtures>({
-  registeredUser: [
+registeredUser: [
     async ({ page }, use) => {
       const registrationPage = new RegistrationPage(page);
-      const user = createRandomUser();
-      await registrationPage.navigate();
-      await registrationPage.register(user);
+      let user = createRandomUser();
+      const maxRetries = 2;
+      let attempt = 0;
+      let registered = false;
+
+      while (attempt < maxRetries && !registered) {
+        if (attempt > 0) {
+          user = createRandomUser(); // Create a new user for each retry
+          console.log(`Retrying registration with a new user: ${user.username}`);
+        }
+
+        try {
+          await registrationPage.navigate();
+          await registrationPage.register(user);
+          await expect(page.locator('body')).not.toContainText('This username already exists.');          
+          registered = true;
+        } catch (error) {
+          console.error(`Attempt ${attempt + 1} failed: ${error}`);
+          if (attempt === maxRetries - 1) {
+            console.error('Registration attempt failed.');
+            throw new Error(`Failed to register user after ${maxRetries} attempts.`);
+          }
+        }
+        attempt++;
+      }
+
       await use(user);
     },
     { scope: 'test' }
