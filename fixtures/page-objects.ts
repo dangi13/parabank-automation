@@ -4,13 +4,17 @@ import { RegistrationPage } from '../pages/RegistrationPage';
 import { HomePage } from '../pages/HomePage';
 import { OpenNewAccountPage } from '../pages/OpenNewAccountPage';
 import { AccountsOverviewPage } from '../pages/AccountsOverviewPage';
+import { TransferFundsPage } from '../pages/TransferFundsPage';
+import { BillPaymentPage } from '../pages/BillPaymentsPage';
 
 export type MyPageObjects = {
   loginPage: LoginPage;
   registrationPage: RegistrationPage;
   homePage: HomePage;
-   openNewAccountPage: OpenNewAccountPage;
+  openNewAccountPage: OpenNewAccountPage;
   accountsOverviewPage: AccountsOverviewPage;
+  transferFundsPage: TransferFundsPage;
+  billPaymentsPage: BillPaymentPage;
 };
 
 export const pageObjectFixtures = baseTest.extend<MyPageObjects>({
@@ -28,5 +32,11 @@ export const pageObjectFixtures = baseTest.extend<MyPageObjects>({
   },
   accountsOverviewPage: async ({ page }, use) => {
     await use(new AccountsOverviewPage(page));
+  },
+  transferFundsPage: async ({ page }, use) => {
+    await use(new TransferFundsPage(page));
+  },
+  billPaymentsPage: async ({ page }, use) => {
+    await use(new BillPaymentPage(page));
   },
 });

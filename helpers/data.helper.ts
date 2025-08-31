@@ -63,3 +63,30 @@ export function createRandomUser(): User {
 
   return user;
 }
+
+export interface Payee {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  phone: string;
+  accountNumber: string;
+  amount: string;
+}
+
+export function createRandomPayee(overrides?: Partial<Payee>): Payee {
+  const basePayee = {
+    name: faker.person.fullName(),
+    address: faker.location.streetAddress(),
+    city: faker.location.city(),
+    state: faker.location.state({ abbreviated: true }),
+    zipCode: faker.location.zipCode(),
+    phone: faker.phone.number(),
+    accountNumber: faker.string.numeric({ length: 5 }),
+    amount: faker.number.int({ min: 1, max: 500 }).toString(), // The amount is now a string,
+  };
+
+  // Merge the base payee object with any provided overrides
+  return { ...basePayee, ...overrides };
+}
