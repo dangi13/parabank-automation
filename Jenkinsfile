@@ -1,26 +1,20 @@
 pipeline {
-    agent any
-
+    agent any // Use any available agent, which will be your machine.
     stages {
-        stage('Build Custom Docker Image') {
+        stage('Checkout Code') {
             steps {
-                script {
-                    // Use the full path to docker to ensure the command is found.
-                    // This command builds your Dockerfile and tags the image for caching.
-                    sh 'docker build -t playwright-ci-image:${BUILD_NUMBER} .'
-                }
+                checkout scm
             }
         }
         
         stage('Run Tests in Docker') {
             steps {
                 sh '''
-                    # Use the full path to docker and the custom image we just built.
-                    # This is fast because the image is cached locally.
+                    # Manually run the Docker command with its full path
                     /usr/local/bin/docker run --rm \\
                       -v $PWD:/usr/src/app -w /usr/src/app \\
-                      playwright-ci-image:${BUILD_NUMBER} \\
-                      /bin/bash -c "npm ci && npx playwright test --reporter=html"
+                      mcr.microsoft.com/playwright:v1.54.2 \\
+                      /bin/bash -c "npm ci && npx playwright install chromium --with-deps && npx playwright test"
                 '''
             }
         }
@@ -31,7 +25,7 @@ pipeline {
             }
         }
     }
-    
+
     post {
         always {
             script {
@@ -40,4 +34,4 @@ pipeline {
             }
         }
     }
-}
+    }
