@@ -8,12 +8,18 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   //workers: process.env.CI ? 1 : undefined,
   workers: 20,
-  reporter: 'html',
+  reporter: [
+    ['html', {
+      // If running on CI, never open the report.
+      // Otherwise, open it only if a test fails.
+      open: process.env.CI ? 'never' : 'always'
+    }]
+  ],
   timeout: 60000,
   use: {
     trace: 'on-first-retry',
     baseURL: 'https://parabank.parasoft.com',
-    headless: process.env.CI ? true : false,
+    headless: true,
     video: 'on',
   },
   projects: [
