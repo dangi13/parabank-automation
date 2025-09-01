@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { APIRequestContext, APIResponse } from '@playwright/test';
 
 export class ApiHelper {

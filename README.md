@@ -86,7 +86,6 @@ The project uses Jenkins for continuous integration. Pipeline stages include:
 
 1. Checkout
 2. Install Dependencies
-3. Lint Check
 4. Run Tests
 5. Generate Reports
 

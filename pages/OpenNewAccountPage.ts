@@ -7,8 +7,7 @@ export class OpenNewAccountPage {
     readonly existingAccountDropdown: Locator;
     readonly openNewAccountButton: Locator;
     readonly newAccountNumberLink: Locator;
-    ;
-
+    
     constructor(page: Page) {
         this.page = page;
         this.typeOfAccountLabel = page.getByLabel('What type of Account would you like to open?');

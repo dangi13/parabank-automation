@@ -7,8 +7,8 @@ import { Payee } from '../types/payee';
  * @returns A randomly generated user object with realistic data.
  */
 export function createRandomUser(overrides?: Partial<User>): User {
-  let firstName = faker.person.firstName();
-  let lastName = faker.person.lastName();
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
   const uniqueId = Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
   const username = uniqueId.substring(0, 15);
   const address = faker.location.streetAddress();

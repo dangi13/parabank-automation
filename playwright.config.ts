@@ -1,4 +1,3 @@
-import { tr } from '@faker-js/faker';
 import { defineConfig, devices } from '@playwright/test';
 
 const isCI = !!process.env.BUILD_NUMBER;
