@@ -1,17 +1,31 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class OnlineServicesComponent {
   constructor(private page: Page) {}
 
+  // --- Locators ---
+  public getBillPayLink(): Locator {
+    return this.page.locator('ul.servicestwo a', { hasText: 'Bill Pay' });
+  }
+
+  public getAccountHistoryLink(): Locator {
+    return this.page.locator('ul.servicestwo a', { hasText: 'Account History' });
+  }
+
+  public getTransferFundsLink(): Locator {
+    return this.page.locator('ul.servicestwo a', { hasText: 'Transfer Funds' });
+  }
+
+  // --- Actions ---
   async goToBillPay() {
-    await this.page.locator('ul.servicestwo a', { hasText: 'Bill Pay' }).click();
+    await this.getBillPayLink().click();
   }
 
   async goToAccountHistory() {
-    await this.page.locator('ul.servicestwo a', { hasText: 'Account History' }).click();
+    await this.getAccountHistoryLink().click();
   }
 
   async goToTransferFunds() {
-    await this.page.locator('ul.servicestwo a', { hasText: 'Transfer Funds' }).click();
+    await this.getTransferFundsLink().click();
   }
 }

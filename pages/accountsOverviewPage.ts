@@ -2,27 +2,36 @@ import { AccountOverview } from '../types/accountOverview';
 import { Page, Locator, expect } from '@playwright/test';
 
 export class AccountsOverviewPage {
-    readonly page: Page;
-    readonly accountsOverviewLink: Locator;
-    readonly accountRows: Locator;
+    constructor(public readonly page: Page) {}
 
-    constructor(page: Page) {
-        this.page = page;
-        this.accountsOverviewLink = page.getByRole('link', { name: 'Accounts Overview' });
-        this.accountRows = page.locator('#accountTable tbody tr');
+    // --- Locators ---
+    public getAccountsOverviewLink(): Locator {
+        return this.page.getByRole('link', { name: 'Accounts Overview' });
     }
 
+    public getAccountRows(): Locator {
+        return this.page.locator('#accountTable tbody tr');
+    }
+
+    public getTableContainer(): Locator {
+        return this.page.locator('#accountTable');
+    }
+
+    public getTotalRow(): Locator {
+        return this.page.locator('tr', { hasText: 'Total' });
+    }
+
+    // --- Actions ---
     async navigate(): Promise<void> {
         await this.page.goto('/parabank/overview.htm');
     }
 
     async getAccountOverview(): Promise<AccountOverview[]> {
-        await this.page.waitForSelector('#accountTable');
-        await expect(this.page.locator('tr', { hasText: 'Total' })).toBeVisible();
+        await this.getTableContainer().waitFor();
+        await expect(this.getTotalRow()).toBeVisible();
+        
         const accounts: AccountOverview[] = [];
-
-        // Find all rows in the table body, but exclude the last row which is the total
-        const rows = await this.accountRows.all();
+        const rows = await this.getAccountRows().all();
 
         for (const row of rows) {
             const accountLink = row.locator('td').first().locator('a');
@@ -44,8 +53,8 @@ export class AccountsOverviewPage {
     }
 
     async getTotalBalance(): Promise<string> {
-        await this.page.waitForSelector('#accountTable');
-        const totalRow = this.page.locator('tr', { hasText: 'Total' });
+        await this.getTableContainer().waitFor();
+        const totalRow = this.getTotalRow();
         const totalBalanceCell = totalRow.locator('td').nth(1);
         const totalBalance = await totalBalanceCell.textContent();
 

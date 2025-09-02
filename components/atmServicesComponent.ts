@@ -1,21 +1,39 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class AtmServicesComponent {
   constructor(private page: Page) {}
 
+  // --- Locators ---
+  public getWithdrawFundsLink(): Locator {
+    return this.page.locator('ul.services a', { hasText: 'Withdraw Funds' });
+  }
+
+  public getTransferFundsLink(): Locator {
+    return this.page.locator('ul.services a', { hasText: 'Transfer Funds' });
+  }
+
+  public getCheckBalancesLink(): Locator {
+    return this.page.locator('ul.services a', { hasText: 'Check Balances' });
+  }
+
+  public getMakeDepositsLink(): Locator {
+    return this.page.locator('ul.services a', { hasText: 'Make Deposits' });
+  }
+
+  // --- Actions ---
   async goToWithdrawFunds() {
-    await this.page.locator('ul.services a', { hasText: 'Withdraw Funds' }).click();
+    await this.getWithdrawFundsLink().click();
   }
 
   async goToTransferFunds() {
-    await this.page.locator('ul.services a', { hasText: 'Transfer Funds' }).click();
+    await this.getTransferFundsLink().click();
   }
 
   async goToCheckBalances() {
-    await this.page.locator('ul.services a', { hasText: 'Check Balances' }).click();
+    await this.getCheckBalancesLink().click();
   }
 
   async goToMakeDeposits() {
-    await this.page.locator('ul.services a', { hasText: 'Make Deposits' }).click();
+    await this.getMakeDepositsLink().click();
   }
 }
