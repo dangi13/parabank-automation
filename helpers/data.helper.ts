@@ -1,4 +1,3 @@
-// helpers/data.helper.ts
 import { faker } from '@faker-js/faker';
 import { User } from '../types/user';
 import { Payee } from '../types/payee';

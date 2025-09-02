@@ -1,10 +1,8 @@
-// helpers/date.helper.ts
 import { expect } from '@playwright/test';
 
 export class DateHelper {
 
  public validateApiTimestampIsCurrentDayUTC(apiTimestamp: number): void {
-    // 1. Get the current date in UTC
     const nowUtc = new Date(Date.now());
     
     // 2. Set the time components to zero to get the start of the current day in UTC
