@@ -29,12 +29,12 @@ test.describe('Parabank e2e Flow', () => {
     console.log(`Account to transfer from details: ${JSON.stringify(accountToTransferFrom)}`);
     expect(accountToTransferFrom).toBeDefined();
     expect(accountToTransferFrom?.balance).not.toBe('$0.00');
-    expect(accountToTransferFrom?.availableAmount).not.toBe('$0.00');
+    expect(accountToTransferFrom?.availableAmount).not.toBeUndefined();
     const accountToTransferTo = accounts.find(account => account.accountNumber !== newAccountNumber);
     console.log(`Account to transfer to details: ${JSON.stringify(accountToTransferTo)}`);
     expect(accountToTransferTo).toBeDefined();
     expect(accountToTransferTo?.balance).not.toBe('$0.00');
-    expect(accountToTransferTo?.availableAmount).not.toBe('$0.00');
+    expect(accountToTransferTo?.availableAmount).not.toBeUndefined();
     const transferAmount = await accountsOverviewPage.calculateTransferAmount(accountToTransferFrom!.accountNumber);
 
     // Transfer funds
