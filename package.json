@@ -18,8 +18,5 @@
     "eslint": "^8.57.0",
     "eslint-plugin-playwright": "^1.5.2",
     "typescript": "^5.9.2"
-  },
-  "dependencies": {
-    "uuid": "^11.1.0"
   }
 }

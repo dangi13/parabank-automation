@@ -1,6 +1,14 @@
 # 🏦 Parabank Automation Framework
 
-This project is an end-to-end automation framework for Parabank application using Playwright with TypeScript.
+This project is an end-to-end automation framework for Parabank application using Playwright with TypeScript, following a component-based Page Object Model architecture.
+
+## 🏗️ Architecture
+
+The framework follows a component-based architecture where UI elements and their associated actions are organized into reusable components. This approach:
+- ♻️ Promotes code reusability
+- 🎯 Reduces code duplication
+- 🔍 Makes test maintenance easier
+- 📦 Provides better encapsulation
 
 ## 🛠️ Tech Stack
 
@@ -59,10 +67,11 @@ npm run lint                 # Run ESLint
 
 ```
 ├── api/                    # API endpoints implementation
-├── fixtures/               # Test fixtures and data
-├── helpers/               # Utility functions and helpers
-├── pages/                 # Page Object Models
-├── tests/                 # Test files
+├── components/            # Reusable UI Components
+├── fixtures/              # Test fixtures and data
+├── helpers/              # Utility functions and helpers
+├── pages/                # Page Objects (composed of components)
+├── tests/                # Test files
 │   ├── api-tests/        # API test specs
 │   └── ui-tests/         # UI test specs
 └── types/                # TypeScript type definitions
@@ -102,11 +111,18 @@ The project uses Jenkins for continuous integration. Pipeline stages include:
 
 ## 🗂️ Best Practices
 
+### Component Development
+1. Create new components in `components/` directory for reusable UI elements
+2. Define component-specific locators and actions
+3. Keep components focused and single-responsibility
+4. Make components reusable across different pages
+
 ### Adding New Tests
-1. Place page objects in `pages/` directory
-2. Add fistures in `fixtures/`
-3. Implement helper functions in `helpers/`
-4. Write tests in `tests/` directory
+1. Create/reuse components in `components/` directory
+2. Compose page objects in `pages/` directory using components
+3. Add fixtures in `fixtures/`
+4. Implement helper functions in `helpers/`
+5. Write tests in `tests/` directory
 
 ### Code Style
 - Follow TypeScript best practices
