@@ -5,17 +5,12 @@ import { Transaction } from '../../types/transaction';
 import { DateHelper } from '../../helpers/date.helper';
 
 test.describe('Parabank e2e Flow', () => {
-  test('Should successfully register a new user do transfer and bill payments', async ({ registrationPage, registeredUser, homePage, openNewAccountPage, accountsOverviewPage, transferFundsPage, billPaymentsPage, findTransactionsPage, bankApi }) => {
-
+  test('Should successfully register a new user do transfer and bill payments', async ({ registeredUser, registrationPage, homePage, bankApi }) => {
     //1. Verify successful registration (already done in auth fixture)
-    const welcomeMessage = `Welcome ${registeredUser.username}`;
-    const successMessage = 'Your account was created successfully. You are now logged in.';
-    await expect(registrationPage.page.getByText(welcomeMessage, { exact: true })).toBeVisible();
-    await expect(registrationPage.page.getByText(successMessage, { exact: true })).toBeVisible();
+    await registrationPage.validateRegistrationSuccess(registeredUser);
 
     //2. Open new Savings account
-    await homePage.navigate()
-    await homePage.clickOpenNewAccountLink()
+    const openNewAccountPage = await homePage.accountServices.goToOpenNewAccount();
     const newAccountNumber = await openNewAccountPage.createNewAccount('SAVINGS');
     console.log(`New account created with account number: ${newAccountNumber}`);
     await expect(openNewAccountPage.page.getByRole('heading', { name: 'Account Opened!' })).toBeVisible();
@@ -23,7 +18,7 @@ test.describe('Parabank e2e Flow', () => {
     await expect(openNewAccountPage.page.getByText('Your new account number:')).toBeVisible();
 
     //3. Validate accounts overview page
-    await accountsOverviewPage.navigate();
+    const accountsOverviewPage = await homePage.accountServices.goToAccountsOverview();
     const accounts = await accountsOverviewPage.getAccountOverview();
     const accountToTransferFrom = accounts.find(account => account.accountNumber === newAccountNumber);
     console.log(`Account to transfer from details: ${JSON.stringify(accountToTransferFrom)}`);
@@ -38,7 +33,7 @@ test.describe('Parabank e2e Flow', () => {
     const transferAmount = await accountsOverviewPage.calculateTransferAmount(accountToTransferFrom!.accountNumber);
 
     // Transfer funds
-    await transferFundsPage.navigate();
+    const transferFundsPage = await homePage.accountServices.goToTransferFunds();
     await transferFundsPage.transferFunds(
       transferAmount,
       accountToTransferFrom!.accountNumber,
@@ -47,13 +42,13 @@ test.describe('Parabank e2e Flow', () => {
     await transferFundsPage.validateTransfer(transferAmount, accountToTransferFrom!.accountNumber, accountToTransferTo!.accountNumber);
 
     // Pay bills
-    billPaymentsPage.navigate();
+    const billPaymentsPage = await homePage.accountServices.goToBillPay();
     const payeeWithCustomAmount = createRandomPayee({ amount: transferAmount });
     await billPaymentsPage.sendPaymentWithDetails(payeeWithCustomAmount, newAccountNumber);
     await billPaymentsPage.validatePaymentSuccess(payeeWithCustomAmount.name, payeeWithCustomAmount.amount, newAccountNumber);
 
     // Find Bill payment transaction through API
-    findTransactionsPage.navigate();
+    await homePage.accountServices.goToFindTransactions(); 
     const cookies: Cookie[] = await billPaymentsPage.page.context().cookies();
     const jsessionIdCookie = cookies.find(cookie => cookie.name === 'JSESSIONID');
     const transactions = await bankApi.getTransactionsByAmount(jsessionIdCookie?.value as string, newAccountNumber, parseFloat(transferAmount)) as Transaction[];

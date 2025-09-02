@@ -1,6 +1,5 @@
 import { test as baseTest, expect } from '@playwright/test';
 import { RegistrationPage } from '../pages/registrationPage';
-import { LoginPage } from '../pages/loginPage';
 import { createRandomUser } from '../helpers/data.helper';
 import { User } from '../types/user';
 
@@ -39,15 +38,6 @@ registeredUser: [
       }
 
       await use(user);
-    },
-    { scope: 'test' }
-  ],
-  authenticatedPage: [
-    async ({ page, registeredUser }, use) => {
-      const loginPage = new LoginPage(page);
-      await loginPage.navigate();
-      await loginPage.login(registeredUser.username, registeredUser.password!);
-      await use({ user: registeredUser, page });
     },
     { scope: 'test' }
   ],

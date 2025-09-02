@@ -1,25 +1,26 @@
-import { Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { MainNavigationComponent } from '../components/mainNavigationComponent';
+import { AccountServicesComponent } from '../components/accountServicesComponent';
+import { AtmServicesComponent } from '../components/atmServicesComponent';
+import { OnlineServicesComponent } from '../components/onlineServicesComponent';
+import { MainPageServicesComponent } from '../components/mainPageServiceComponent';
 
 export class HomePage {
-  readonly page: Page;
-  readonly welcomeMessage: Locator;
-  readonly profileLink: Locator;
-  readonly logoutButton: Locator;
-  readonly openNewAccountLink: Locator;
+  public mainNavigation: MainNavigationComponent;
+  public accountServices: AccountServicesComponent;
+  public atmServices: AtmServicesComponent;
+  public onlineServices: OnlineServicesComponent;
+  public mainPageServices: MainPageServicesComponent;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.welcomeMessage = page.getByText('Welcome,');
-    this.profileLink = page.locator('#profile-link');
-    this.logoutButton = page.locator('#logout-button');
-    this.openNewAccountLink = page.getByRole('link', { name: 'Open New Account' });
+  constructor(private page: Page) {
+    this.mainNavigation = new MainNavigationComponent(this.page);
+    this.accountServices = new AccountServicesComponent(this.page);
+    this.atmServices = new AtmServicesComponent(this.page);
+    this.onlineServices = new OnlineServicesComponent(this.page);
+    this.mainPageServices = new MainPageServicesComponent(this.page);
   }
 
-  async navigate(): Promise<void> {
+  async navigate() {
     await this.page.goto('/parabank/index.htm');
-  }
-
-  async clickOpenNewAccountLink(): Promise<void> {
-    await this.openNewAccountLink.click();
   }
 }
