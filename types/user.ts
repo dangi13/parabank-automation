@@ -1,4 +1,6 @@
 export interface User {
+  street: string;
+  phoneNumber: string;
   firstName: string;
   lastName: string;
   address: string;
